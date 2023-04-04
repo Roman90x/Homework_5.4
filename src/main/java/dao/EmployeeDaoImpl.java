@@ -26,7 +26,7 @@ public class EmployeeDaoImpl implements EmployeeDao{
             statement.setString(2, employee.getLastName());
             statement.setString(3, employee.getGender());
             statement.setInt(4,employee.getAge());
-            statement.execute();
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -73,7 +73,7 @@ public class EmployeeDaoImpl implements EmployeeDao{
                 statement.setString(3, employee.getGender());
                 statement.setInt(4,employee.getAge());
                 statement.setInt(5,employee.getId());
-                statement.execute();
+                statement.executeUpdate();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -87,7 +87,7 @@ public class EmployeeDaoImpl implements EmployeeDao{
         if (createEmployee != null) {
             try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
                 statement.setInt(1,id);
-                statement.execute();
+                statement.executeUpdate();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
