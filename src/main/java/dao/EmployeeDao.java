@@ -1,7 +1,6 @@
 package dao;
 
 import model.Employee;
-
 import java.util.List;
 
 public interface EmployeeDao {
@@ -9,8 +8,6 @@ public interface EmployeeDao {
     Employee findById(int id);
     List<Employee> findAll();
     void update(Employee employee);
-    void deleteById(int id);
-
-
+    void delete(Employee employee);
 
 }

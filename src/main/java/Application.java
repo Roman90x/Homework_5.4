@@ -1,55 +1,26 @@
-
 import dao.EmployeeDaoImpl;
 import model.Employee;
 
-import java.sql.*;
-
 public class Application {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
+        EmployeeDaoImpl employeeDao = new EmployeeDaoImpl();
 
-        final String user = "postgres";
-        final String password = "0990";
-        final String url = "jdbc:postgresql://localhost:5432/skypro";
+        employeeDao.create(new Employee("Petr", "Pervyh", "m", 30));
+        System.out.println("Получение полного списка сотрудников с только что добавленным");
+        employeeDao.findAll().forEach(System.out::println);
+        System.out.println();
 
-        try (final Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM employee WHERE id=?")
-        ) {
+        System.out.println("Получение сотрудника по id");
+        Employee employee = employeeDao.findById(5);
+        System.out.println(employee);
 
-            statement.setInt(1, 1);
-            ResultSet resultSet = statement.executeQuery();
+        employee.setGender("M");
+        System.out.println("Обновление сотрудника");
+        System.out.println(employeeDao.findById(5));
 
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String firstName = resultSet.getString("first_name");
-                String lastName = resultSet.getString("last_name");
-                String gender = resultSet.getString("gender");
-                int age = resultSet.getInt("age");
-                int cityId = resultSet.getInt("city_id");
-                Employee e = new Employee(id, firstName, lastName, gender, age, cityId);
-                System.out.println("Задание 1. Получить и вывести в консоль полные данные об одном из работников");
-                System.out.println(e);
-                System.out.println();
-            }
-
-            EmployeeDaoImpl employeeDao = new EmployeeDaoImpl(connection);
-
-            System.out.println("Задание 2. Добавление сотрудника и получение полного списка");
-            employeeDao.create(new Employee("Denis", "Radulov", "mzh", 32));
-            employeeDao.findAll().forEach(System.out::println);
-            System.out.println();
-
-            Employee employee = employeeDao.findById(3);
-            employee.setFirstName("UPDATE NAME");
-            employeeDao.update(employee);
-
-            System.out.println("Обновление сотрудника и получение сотрудника по id");
-            System.out.println(employeeDao.findById(3));
-            System.out.println();
-
-            employeeDao.deleteById(5);
-            System.out.println("Проверка удаления");
-            employeeDao.findAll().forEach(System.out::println);
-
-        }
+        employeeDao.delete(employee);
+        System.out.println("Проверка на удаление");
+        employeeDao.findAll().forEach(System.out::println);
     }
+
 }
