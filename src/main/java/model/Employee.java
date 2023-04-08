@@ -7,14 +7,14 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Data
-@AllArgsConstructor
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "employee")
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "first_name")
     private String firstName;
@@ -26,15 +26,21 @@ public class Employee {
     private String gender;
 
     @Column(name = "age")
-    private int age;
+    private Integer age;
 
-    @Column(name = "city_id")
-    private int cityId;
+    @ManyToOne
+    @JoinColumn(name = "city_id", referencedColumnName = "city_id")
+    private City city;
 
-    public Employee(String firstName, String lastName, String gender, int age) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.age = age;
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", gender='" + gender + '\'' +
+                ", age=" + age +
+                ", city=" + (city != null ? city.getCityName(): "") +
+                '}';
     }
 }
